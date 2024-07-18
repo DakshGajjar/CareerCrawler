@@ -10,7 +10,7 @@ A web scraper app built using Flask that scrapes job listings from Lever and Gre
 
 ## Usage
 
-1. Clone the repository: `git clone https://github.com/your-username/job-scraper-app.git`
+1. Clone the repository: `git clone https://github.com/dakshgajjar/careercrawler.git`
 2. Install the dependencies: `pip install -r requirements.txt`
 3. Run the app: `python app.py`
 4. Open the app in your web browser: `http://localhost:5000`
@@ -24,10 +24,7 @@ The app uses two environment variables:
 
 ## Templates
 
-The app uses two HTML templates:
-
 * `some.html`: The main template for displaying job listings.
-* `another.html`: Not used in this app.
 
 ## Dependencies
 
