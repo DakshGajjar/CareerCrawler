@@ -4,7 +4,6 @@ from flask import Flask,request,render_template
 
 app = Flask(__name__)
 
-
 def slink(url,t):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -40,16 +39,10 @@ def scrape_job(postion,location,t):
     for i in jobdir:
         try:
             details = slink(i,t)
-            print(details)
-            finjlist.append([i,details[0],details[1],details[2]])
+            finjlist.append([i,details[0],f'{details[1]} [{details[2]}]'])
         except Exception as e:
             print(e)
-    print('='*150)
-    #print(finjlist)
-    print('='*150)
-    return finjlist if len(finjlist)>0 else ['-','Couldn\'t srape jobs this time!','-','Try Again']
-    #return [[jobdir[j].split("-")[0],jobdir[j].split("-")[1],j] for j in jobdir.keys() if len(j)>0]
-    #print(joblist)
+    return finjlist if len(finjlist)>0 else ['/','Couldn\'t srape jobs this time!','-','Try Again']
 
 @app.route('/',methods=['GET','POST'])
 def index():
@@ -58,13 +51,9 @@ def index():
     elif request.method == 'POST':
         title = request.form["title"]
         location = request.form["loc"]
-        try:
-            jobs = scrape_job(title,location,t=True) + scrape_job(title,location,t=False) 
-        except:
-            jobs = ['-','Couldn\'t srape jobs this time!','-','Try Again']
+        jobs = scrape_job(title,location,t=True) + scrape_job(title,location,t=False) 
         return render_template('some.html',jobs=jobs)
 
 
 if __name__ == '__main__':
-    app.run()
-    #scrape_google(pos,location)
+    app.run(debug=True)
