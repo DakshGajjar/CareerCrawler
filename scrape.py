@@ -47,7 +47,7 @@ def scrape_job(postion,location,t):
     print('='*150)
     #print(finjlist)
     print('='*150)
-    return finjlist if len(finjlist)>0 else ['/','Couldn\'t srape jobs this time!','-','Try Again']
+    return finjlist if len(finjlist)>0 else ['-','Couldn\'t srape jobs this time!','-','Try Again']
     #return [[jobdir[j].split("-")[0],jobdir[j].split("-")[1],j] for j in jobdir.keys() if len(j)>0]
     #print(joblist)
 
@@ -58,10 +58,13 @@ def index():
     elif request.method == 'POST':
         title = request.form["title"]
         location = request.form["loc"]
-        jobs = scrape_job(title,location,t=True) + scrape_job(title,location,t=False) 
+        try:
+            jobs = scrape_job(title,location,t=True) + scrape_job(title,location,t=False) 
+        except:
+            jobs = ['-','Couldn\'t srape jobs this time!','-','Try Again']
         return render_template('some.html',jobs=jobs)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
     #scrape_google(pos,location)
