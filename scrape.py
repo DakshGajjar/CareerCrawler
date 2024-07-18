@@ -1,4 +1,4 @@
-import requests, tabulate
+import requests
 from bs4 import BeautifulSoup
 from flask import Flask,request,render_template
 
