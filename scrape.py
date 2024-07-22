@@ -31,17 +31,19 @@ def scrape_job(postion,location,t):
     for result in results:
         title = result.find('h3').text if result.find('h3') is not None else ''
         link = result.find('a')['href'] if result.find('a') is not None else ''
-        #print(link)
         if checklink in link:
             jobdir[link[link.index(checklink):link.index('&')]] = title.replace(tr,'')
-    #print('\n\n'.join([' - '.join(i) for i in joblist]))
     finjlist = []
     for i in jobdir:
         try:
             details = slink(i,t)
-            finjlist.append([i,details[0],f'{details[1]} [{details[2]}]'])
+            print(details)
+            job = [i,details[0],f'{details[1]} [{details[2]}]']
+            finjlist.append(job) if len(job)==3 else None
         except Exception as e:
             print(e)
+    print('='*150)
+    print('='*150)
     return finjlist if len(finjlist)>0 else ['/','Couldn\'t srape jobs this time!','-','Try Again']
 
 @app.route('/',methods=['GET','POST'])
