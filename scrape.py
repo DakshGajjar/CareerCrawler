@@ -4,19 +4,23 @@ from flask import Flask,request,render_template
 
 app = Flask(__name__)
 
+
 def slink(url,t):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
-    if t:
-        title = soup.find_all('h2')[0]
-        cname = soup.find_all('img')[0]['alt'].replace('logo','')
-        loc = soup.find('div',class_='sort-by-time')
-        return title.text,cname,loc.text    
-    else:
-        title = soup.find('h1')
-        loc = soup.find('div',class_='location')
-        cname = soup.find('span',class_='company-name')
-        return title.text,cname.text.strip().replace('at',''),loc.text.strip()
+    try:
+        if t:
+            title = soup.find_all('h2')[0]
+            cname = soup.find_all('img')[0]['alt'].replace('logo','')
+            loc = soup.find('div',class_='sort-by-time')
+            return title.text,cname,loc.text    
+        else:
+            title = soup.find('h1')
+            loc = soup.find('div',class_='location')
+            cname = soup.find('span',class_='company-name')
+            return title.text,cname.text.strip().replace('at',''),loc.text.strip()
+    except Exception as e:
+        print(e)
     
 def scrape_job(postion,location,t):
     pos = postion.replace(" ","+")
@@ -38,13 +42,12 @@ def scrape_job(postion,location,t):
         try:
             details = slink(i,t)
             print(details)
-            try:
-                job = [i,details[0],f'{details[1]} [{details[2]}]']
-            except:
-                job = []
+            job = [i,details[0],f'{details[1]} [{details[2]}]']
             finjlist.append(job) if len(job)==3 else None
         except Exception as e:
             print(e)
+    print('='*150)
+    print('='*150)
     return finjlist if len(finjlist)>0 else ['/','Couldn\'t srape jobs this time!','-','Try Again']
 
 @app.route('/',methods=['GET','POST'])
@@ -60,3 +63,4 @@ def index():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    #scrape_google(pos,location)
