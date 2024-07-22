@@ -38,12 +38,13 @@ def scrape_job(postion,location,t):
         try:
             details = slink(i,t)
             print(details)
-            job = [i,details[0],f'{details[1]} [{details[2]}]']
+            try:
+                job = [i,details[0],f'{details[1]} [{details[2]}]']
+            except:
+                job = []
             finjlist.append(job) if len(job)==3 else None
         except Exception as e:
             print(e)
-    print('='*150)
-    print('='*150)
     return finjlist if len(finjlist)>0 else ['/','Couldn\'t srape jobs this time!','-','Try Again']
 
 @app.route('/',methods=['GET','POST'])
